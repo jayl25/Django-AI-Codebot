@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for query in queries %}
+
+<div class="card bg-dark green-text text-center">
+    <div class="card-header bg-secondary">
+        <strong>{{ query.language }}</strong>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Query: {{ query.title }}</h5>
+
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#userCodeModal{{ query.id }}">
+            See My Query
+        </button>
+
+        <div class="modal fade" id="userCodeModal{{ query.id }}" tabindex="-1" aria-labelledby="userCode{{ query.id }}"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="userCode{{ query.id }}">My Query</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <pre><code class="line-numbers language-{{ query.language }}">{{ query.question }}</code></pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#aiResponseModal{{ query.id }}">
+            See A.I. Response
+        </button>
+
+        <div class="modal fade" id="aiResponseModal{{ query.id }}" tabindex="-1" aria-labelledby="aiResponse{{ query.id }}"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="aiResponse{{ query.id }}">A.I. Response</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <pre><code class="line-numbers language-{{ query.language }}">{{ query.code_answer }}</code></pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br><br>
+
+{% endfor %}
+
+{% endblock %}

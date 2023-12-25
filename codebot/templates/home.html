@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% if response %}
+<h1 class="green-text">A.I. Fixer-Upper</h1>
+
+<pre><code class="line-numbers language-{{lang}}">{{response}}</code></pre>
+<br />
+{% endif %}
+<form method="POST" action="{% url 'home' %}">
+  {% csrf_token %}
+  <h3 class=" form-label green-text">Title</h3>
+  <input type="text" class="form-control custom-textarea" placeholder="Enter title...." name="title"><br>
+  <h3 class="green-text">Your Code</h3>
+  <div class="mb-3 form-group">
+    <textarea class="form-control custom-textarea" name="code" rows="3"
+      placeholder="Enter your code here so the A.I. can fix it!"></textarea>
+  </div>
+  <h3 class="green-text">Programming Language</h3>
+  <select class="form-select custom-select" aria-label="Select Language" name="lang">
+    <option selected>Select Programming Language</option>
+    {% for language in languages %}
+    <option value="{{ language }}">{{ language }}</option>
+    {% endfor %}
+  </select>
+  <br /><br />
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
