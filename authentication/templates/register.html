@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<form class="row g-3" method="POST">
+
+    {% csrf_token %}
+    <div class="col-md-6">
+      <label for="fname" class="form-label green-text">First Name</label>
+      {{ form.first_name }}
+    </div>
+    <div class="col-md-6">
+      <label for="lname" class="form-label green-text">Last Name</label>
+      {{ form.last_name }}
+    </div>
+    <div class="col-12">
+      <label for="email" class="form-label green-text">Email</label>
+      {{ form.email }}
+    </div>
+    <div class="col-12">
+      <label for="username" class="form-label green-text">Username</label>
+      {{ form.username }}
+    </div>
+    <div class="col-12">
+      <label for="password1" class="form-label green-text">Password</label>
+     {{ form.password1 }}
+        
+    </div>
+    <div class="col-md-6">
+      <label for="password2" class="form-label green-text">Confirm Password</label>
+     {{ form.password2 }}      
+    </div>
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+  </form>
+
+{% endblock %}
