@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<form method="POST" action="{% url 'edit_post' id%}">
+    {% csrf_token %}
+    
+    <div class="col-12 mb-2">
+        <h4 for="title" class="form-label green-text">Title</h4>
+        {{ form.title }}
+    </div>
+    
+    <div class="col-12 mb-2">
+        <h4 for="code" class="form-label green-text">Code</h4>
+        {{ form.code }}
+    </div>
+    
+    <div class="col-12 mb-2">
+        <h4 for="language" class="form-label green-text">Programming Language</h4>
+        {{ form.language }}
+    </div>
+    
+    <button type="submit" class="btn btn-success">Submit</button>
+</form>
+{% endblock  %}
+    

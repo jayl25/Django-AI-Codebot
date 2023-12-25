@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container p-4">
+
+    <div class="container d-flex align-items-center justify-content-evenly">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#threadModal">
+            Post New Question
+        </button>
+
+        <!-- Post Question Modal -->
+        <div class="modal fade" id="threadModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content dark-background">
+                    <div class="modal-header">
+                        <h4 class="modal-title fs-5 green-text" id="threadModal">Post New Question</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{% url 'posts' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <h4 class="form-label green-text">Title</h4>
+                            {{ form.title }}
+                            <h4 class="form-label green-text">Your Code</h4>
+                            <div class="mb-3 form-group">
+                                {{form.code}}
+                            </div>
+                            <h4 class="form-label green-text">Programming Language</h4>
+                            <div class="mb-3 form-group">
+                                {{form.language}}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container mt-3">
+
+
+        {% for query in response %}
+
+        <div class="card bg-dark green-text m-4 text-center">
+            <div class="card-header d-flex align-items-center justify-content-between bg-secondary">
+                
+                
+                {% if uid == query.user.id %}
+                    <form action="{% url 'delete_post' query.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>    
+                    
+                    <a class="btn btn-warning" href="{% url 'edit_post' query.id %}">Edit</a>
+
+
+                {% endif %}
+                    
+                
+                
+                <strong>{{ query.language }}</strong>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ query.user.username }}: {{ query.title }}</h5>
+                
+                <!-- Code Bug modal -->
+                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                    data-bs-target="#userCodeModal{{ query.id }}">
+                    See Code Bug
+                </button>
+
+                <div class="modal fade" id="userCodeModal{{ query.id }}" tabindex="-1"
+                    aria-labelledby="userCode{{ query.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-secondary">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userCode{{ query.id }}">Code Bug</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <pre><code class="line-numbers language-{{ query.language }}">{{ query.code }}</code></pre>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reply Modal -->
+                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                    data-bs-target="#replyModal{{ query.id }}">
+                    Reply
+                </button>
+
+                <div class="modal fade" id="replyModal{{ query.id }}" tabindex="-1"
+                    aria-labelledby="replyModal{{ query.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-secondary">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="replyModal{{ query.id }}">Reply</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+
+                            <form action="{% url 'reply' query.id %}" method="POST">
+
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <h3>Code Solution</h3>
+                                    <div class="mb-3 form-group">
+                                        <pre><textarea class="form-control custom-textarea" name="code" rows="3" placeholder="Provide Code Solution Here!"></textarea></pre>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Reply</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
